@@ -3,462 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MINES MANAGER</title>
-    <style>
-        /* Основные стили */
-        body {
-            background: #121212;
-            color: #fff;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            overflow: auto;
-        }
-
-        /* Фон */
-        .background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: #121212;
-        }
-
-        /* Звезды */
-        .star {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle 2s infinite;
-        }
-
-        @keyframes twinkle {
-            0%, 100% {
-                opacity: 0;
-            }
-            50% {
-                opacity: 1;
-            }
-        }
-
-        /* Основной контейнер */
-        .main-container {
-            background: rgba(31, 31, 31, 0.8);
-            border: 2px solid #00bfff;
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 0 20px rgba(0, 191, 255, 0.5);
-            backdrop-filter: blur(10px);
-            width: 90%;
-            max-width: 500px;
-            margin: 80px auto 20px;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Заголовок бота */
-        .bot-title {
-            font-size: 24px;
-            font-weight: bold;
-            margin: 0 0 5px;
-            text-align: center;
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        /* Подпись под заголовком */
-        .bot-subtitle {
-            font-size: 14px;
-            color: #aaa;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        /* Контейнер для ячеек */
-        .game-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            padding: 10px;
-            margin: 0;
-        }
-
-        /* Ячейка игры */
-        .game {
-            text-align: center;
-            border: 2px solid #00bfff;
-            border-radius: 15px;
-            padding: 15px;
-            background: rgba(31, 31, 31, 0.9);
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative; /* Для позиционирования текста "В разработке" */
-        }
-
-        .game:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(0, 191, 255, 0.2);
-        }
-
-        .game img {
-            width: 60px;
-            height: 60px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-        }
-
-        .game h3 {
-            margin: 0;
-            font-size: 16px;
-            color: #fff;
-            text-shadow: 0 0 10px rgba(0, 191, 255, 0.8);
-        }
-
-        /* Кнопки для Telegram, Инструкции и реферальной ссылки */
-        .buttons {
-            margin-top: 20px;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .buttons button {
-            background: linear-gradient(90deg, #007bff, #00bfff);
-            border: none;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: transform 0.3s ease;
-            flex: 1 1 auto;
-            min-width: 120px;
-        }
-
-        .buttons button:hover {
-            transform: translateY(-3px);
-        }
-
-        /* Модальное окно */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .modal-content {
-            background: #1f1f1f;
-            padding: 25px;
-            border-radius: 15px;
-            max-width: 75%;
-            width: 300px;
-            height: 380px;
-            text-align: center;
-            position: relative;
-            box-shadow: 0 0 20px rgba(0, 191, 255, 0.5);
-            border: 2px solid #00bfff;
-            overflow-y: auto;
-        }
-
-        .modal-content h2 {
-            margin-top: 0;
-            color: #fff;
-        }
-
-        .modal-content p {
-            color: #aaa;
-            text-align: justify;
-            line-height: 1.6;
-            font-size: 16px;
-            margin: 10px 0;
-            word-spacing: -1.5px;
-        }
-
-        .modal-content p * {
-            word-spacing: inherit;
-        }
-
-        .modal-content p .promo {
-            font-weight: bold;
-            color: #00bfff;
-            font-style: italic;
-            font-size: 18px;
-            word-spacing: -1.5px;
-        }
-
-        .modal-content button {
-            background: #007bff;
-            border: none;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: transform 0.3s ease;
-        }
-
-        .modal-content button:hover {
-            transform: scale(1.1);
-        }
-
-        .modal-content button:active {
-            transform: scale(0.9);
-        }
-
-        /* Анимация для крестика */
-        .close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            color: #fff;
-            font-size: 24px;
-            cursor: pointer;
-            transition: transform 0.3s ease, color 0.3s ease;
-        }
-
-        .close:hover {
-            transform: scale(1.2);
-            color: #00bfff;
-        }
-
-        .close:active {
-            animation: rotate 0.5s ease;
-        }
-
-        @keyframes rotate {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* Адаптация для мобильных устройств */
-        @media (max-width: 768px) {
-            .main-container {
-                padding: 15px;
-                margin: 10px;
-                width: 90%;
-            }
-
-            .game-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-                padding: 10px;
-            }
-
-            .game {
-                padding: 15px;
-            }
-
-            .game img {
-                width: 50px;
-                height: 50px;
-            }
-
-            .game h3 {
-                font-size: 14px;
-            }
-
-            .buttons {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .buttons button {
-                width: 100%;
-            }
-
-            .modal-content {
-                width: 90%;
-            }
-
-            .title-container h1 {
-                font-size: 28px;
-            }
-
-            .title-container h2 {
-                font-size: 16px;
-            }
-
-            /* Упрощение анимаций для мобильных устройств */
-            .close:hover {
-                transform: none; /* Убираем увеличение при наведении */
-                color: #fff; /* Возвращаем стандартный цвет */
-            }
-
-            .close:active {
-                animation: none; /* Убираем вращение при нажатии */
-                transform: scale(1.1); /* Увеличиваем кнопку при нажатии */
-            }
-        }
-
-        /* Текст над рамкой */
-        .title-container {
-            position: absolute;
-            top: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            z-index: 1000;
-        }
-
-        .title-container h1 {
-            font-size: 36px;
-            font-weight: bold;
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin: 0;
-            animation: glow 2s infinite alternate;
-        }
-
-        .title-container h2 {
-            font-size: 18px;
-            color: #aaa;
-            margin: 0;
-            animation: glow 2s infinite alternate;
-        }
-
-        @keyframes glow {
-            0% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); }
-            100% { text-shadow: 0 0 20px rgba(0, 191, 255, 0.8); }
-        }
-
-        /* Кнопки под рамкой */
-        .bottom-buttons {
-            position: absolute;
-            bottom: -60px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 10px;
-            z-index: 1000;
-            width: 90%;
-            max-width: 500px;
-            justify-content: center;
-        }
-
-        .bottom-buttons button {
-            background: linear-gradient(90deg, #007bff, #00bfff);
-            border: none;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: transform 0.3s ease;
-            animation: shine 3s infinite;
-            flex: 1;
-            margin: 0 5px;
-        }
-
-        .bottom-buttons button:hover {
-            transform: translateY(-3px);
-        }
-
-        @keyframes shine {
-            0% { background: linear-gradient(90deg, #007bff, #00bfff); }
-            50% { background: linear-gradient(90deg, #00bfff, #007bff); }
-            100% { background: linear-gradient(90deg, #007bff, #00bfff); }
-        }
-
-        /* Переключение языков */
-        .language-switcher {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-
-        .language-switcher button {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 14px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .language-switcher button img {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-        }
-
-        .language-switcher .dropdown {
-            display: none;
-            position: absolute;
-            top: 30px;
-            right: 0;
-            background: rgba(31, 31, 31, 0.9);
-            border: 1px solid #00bfff;
-            border-radius: 10px;
-            padding: 10px;
-            z-index: 1000;
-        }
-
-        .language-switcher .dropdown button {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            width: 100%;
-            padding: 5px;
-            text-align: left;
-        }
-
-        .language-switcher .dropdown button:hover {
-            background: rgba(0, 191, 255, 0.2);
-        }
-
-        .language-switcher.active .dropdown {
-            display: block;
-        }
-
-        /* Стили для неактивной игры */
-        .game.disabled {
-            cursor: not-allowed;
-            opacity: 0.6;
-            pointer-events: none;
-        }
-
-        .game.disabled img {
-            filter: blur(2px);
-        }
-
-        .game.disabled::after {
-            content: attr(data-in-development); /* Используем атрибут для текста */
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #fff;
-            font-size: 14px;
-            font-weight: bold;
-            text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
-        }
-    </style>
+    <title>SIGNAL MANAGER</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
     <!-- Фон -->
@@ -470,20 +17,20 @@
     <!-- Переключение языков -->
     <div class="language-switcher">
         <button onclick="toggleLanguageDropdown()">
-            <img id="flag-icon" src="https://flagcdn.com/ru.svg" alt="RU">
+            <img id="flag-icon" src="flags/ru.svg" alt="RU">
             <span id="language-button">RU ▼</span>
         </button>
         <div class="dropdown">
             <button onclick="setLanguage('ru')">
-                <img src="https://flagcdn.com/ru.svg" alt="RU">
+                <img src="flags/ru.svg" alt="RU">
                 RU
             </button>
             <button onclick="setLanguage('en')">
-                <img src="https://flagcdn.com/us.svg" alt="EN">
+                <img src="flags/us.svg" alt="EN">
                 EN
             </button>
             <button onclick="setLanguage('in')">
-                <img src="https://flagcdn.com/in.svg" alt="IN">
+                <img src="flags/in.svg" alt="IN">
                 IN
             </button>
         </div>
@@ -491,8 +38,8 @@
 
     <!-- Текст над рамкой -->
     <div class="title-container">
-        <h1>MINES MANAGER</h1>
-        <h2>by nickname</h2>
+        <h1>SIGNAL MANAGER</h1>
+        <h2>by whydizvert</h2>
     </div>
 
     <!-- Основной контейнер -->
@@ -501,37 +48,37 @@
         <div class="game-grid">
             <!-- Lucky Jet -->
             <div class="game" onclick="window.location.href='https://maxim378gaps.github.io/zet/?lang=' + currentLang">
-                <img src="./static/images/lucky_jet.png" alt="Lucky Jet">
+                <img src="static/images/lucky_jet.png" alt="Lucky Jet">
                 <h3 data-key="lucky_jet">Lucky Jet</h3>
             </div>
 
             <!-- Mines -->
             <div class="game" onclick="window.location.href='https://ссылка_на_mines'">
-                <img src="./static/images/mines.png" alt="Mines">
+                <img src="static/images/mines.png" alt="Mines">
                 <h3 data-key="mines">Mines</h3>
             </div>
 
             <!-- New Mines -->
             <div class="game" onclick="window.location.href='https://ссылка_на_new_mines'">
-                <img src="./static/images/new_mines.png" alt="New Mines">
+                <img src="static/images/new_mines.png" alt="New Mines">
                 <h3 data-key="new_mines">New Mines</h3>
             </div>
 
             <!-- CoinFlip -->
             <div class="game" onclick="window.location.href='https://ссылка_на_coinflip'">
-                <img src="./static/images/coinflip.png" alt="CoinFlip">
+                <img src="static/images/coinflip.png" alt="CoinFlip">
                 <h3 data-key="coinflip">CoinFlip</h3>
             </div>
 
             <!-- Royal Mines -->
             <div class="game disabled" data-in-development="В разработке">
-                <img src="./static/images/royal_mines.png" alt="Royal Mines">
+                <img src="static/images/royal_mines.png" alt="Royal Mines">
                 <h3 data-key="royal_mines">Royal Mines</h3>
             </div>
 
             <!-- Aviator -->
             <div class="game" onclick="window.location.href='https://ссылка_на_aviator'">
-                <img src="./static/images/aviator.png" alt="Aviator">
+                <img src="static/images/aviator.png" alt="Aviator">
                 <h3 data-key="aviator">Aviator</h3>
             </div>
         </div>
@@ -554,141 +101,5 @@
             <button onclick="closeModal()" data-key="close_button">Закрыть</button>
         </div>
     </div>
-
-    <script>
-        // Данные для перевода
-        const translations = {
-            ru: {
-                main_menu: "Главное меню",
-                game_history: "История игр",
-                device_check: "Проверка устройства",
-                lucky_jet: "Lucky Jet",
-                mines: "Mines",
-                new_mines: "New Mines",
-                coinflip: "CoinFlip",
-                royal_mines: "Royal Mines",
-                aviator: "Aviator",
-                instruction_button: "ИНСТРУКЦИЯ",
-                referral_button: "ИГРАЕМ ТУТ",
-                instruction_title: "Инструкция",
-                instruction_text: `Для того, чтобы получить сигнал, выбери режим в главном меню. Если ты сделал все правильно и зарегистрировался через кнопку в боте, то твой аккаунт привязан к приложению с сигналами и будет работать в штатном режиме. Указывая промокод <span class="promo">«MINWIN25»</span> при регистрации, шансы на точность сигналов возрастают до 98%. Удачных сигналов!`,
-                close_button: "Закрыть",
-                device_scanning: "Определяем ваше устройство...",
-                device_result: "Ваше устройство: {device}. Рекомендуемые режимы: Lucky Jet, Mines.",
-                in_development: "В разработке" // Добавлен перевод для "В разработке"
-            },
-            en: {
-                main_menu: "Main Menu",
-                game_history: "Game History",
-                device_check: "Device Check",
-                lucky_jet: "Lucky Jet",
-                mines: "Mines",
-                new_mines: "New Mines",
-                coinflip: "CoinFlip",
-                royal_mines: "Royal Mines",
-                aviator: "Aviator",
-                instruction_button: "INSTRUCTION",
-                referral_button: "PLAY HERE",
-                instruction_title: "Instruction",
-                instruction_text: `To receive a signal, select a mode in the main menu. If you have done everything correctly and registered through the button in the bot, your account is linked to the signal application and will work in normal mode. By specifying the promo code <span class="promo">«MINWIN25»</span> during registration, the chances of signal accuracy increase to 98%. Good luck with your signals!`,
-                close_button: "Close",
-                device_scanning: "Detecting your device...",
-                device_result: "Your device: {device}. Recommended modes: Lucky Jet, Mines.",
-                in_development: "In Development" // Добавлен перевод для "В разработке"
-            },
-            in: {
-                main_menu: "मुख्य मेनू",
-                game_history: "खेल इतिहास",
-                device_check: "डिवाइस जांच",
-                lucky_jet: "लकी जेट",
-                mines: "माइन्स",
-                new_mines: "न्यू माइन्स",
-                coinflip: "कॉइनफ्लिप",
-                royal_mines: "रॉयल माइन्स",
-                aviator: "एविएटर",
-                instruction_button: "निर्देश",
-                referral_button: "यहां खेलें",
-                instruction_title: "निर्देश",
-                instruction_text: `सिग्नल प्राप्त करने के लिए, मुख्य मेनू में एक मोड चुनें। यदि आपने सब कुछ सही ढंग से किया है और बॉट में बटन के माध्यम से पंजीकरण किया है, तो आपका खाता सिग्नल एप्लिकेशन से जुड़ा होगा और सामान्य रूप से काम करेगा। पंजीकरण के दौरान प्रोमो कोड <span class="promo">«MINWIN25»</span> निर्दिष्ट करने से, सिग्नल सटीकता की संभावना 98% तक बढ़ जाती है। शुभकामनाएँ!`,
-                close_button: "बंद करें",
-                device_scanning: "आपका डिवाइस पहचाना जा रहा है...",
-                device_result: "आपका डिवाइस: {device}. अनुशंसित मोड: Lucky Jet, Mines.",
-                in_development: "विकास में" // Добавлен перевод для "В разработке"
-            }
-        };
-
-        // Установка языка
-        let currentLang = localStorage.getItem('selectedLanguage') || 'ru'; // Текущий язык по умолчанию
-
-        function setLanguage(lang) {
-            currentLang = lang; // Обновляем текущий язык
-
-            // Сохраняем язык в localStorage
-            localStorage.setItem('selectedLanguage', lang);
-
-            // Обновляем текст на кнопке переключения языка
-            const languageButton = document.getElementById('language-button');
-            languageButton.textContent = lang.toUpperCase() + ' ▼';
-
-            // Обновляем флаг
-            const flagIcon = document.getElementById('flag-icon');
-            flagIcon.src = `https://flagcdn.com/${lang === 'ru' ? 'ru' : lang === 'en' ? 'us' : 'in'}.svg`;
-
-            // Обновляем остальные тексты
-            document.querySelectorAll('[data-key]').forEach(element => {
-                const key = element.getAttribute('data-key');
-                if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-                    element.placeholder = translations[lang][key];
-                } else {
-                    element.innerHTML = translations[lang][key]; // Используем innerHTML для поддержки HTML-тегов
-                }
-            });
-
-            // Обновляем текст "В разработке"
-            const royalMines = document.querySelector('.game.disabled');
-            if (royalMines) {
-                royalMines.setAttribute('data-in-development', translations[lang].in_development);
-            }
-
-            // Закрываем выпадающий список
-            document.querySelector('.language-switcher').classList.remove('active');
-        }
-
-        // Открытие/закрытие выпадающего списка языков
-        function toggleLanguageDropdown() {
-            const switcher = document.querySelector('.language-switcher');
-            switcher.classList.toggle('active');
-        }
-
-        // Открытие модального окна
-        function openModal() {
-            document.getElementById('instructionModal').style.display = 'flex';
-        }
-
-        // Закрытие модального окна
-        function closeModal() {
-            document.getElementById('instructionModal').style.display = 'none';
-        }
-
-        // По умолчанию русский язык
-        setLanguage(currentLang);
-
-        // Создание звезд
-        function createStars() {
-            const starsContainer = document.getElementById('stars-container');
-            const starCount = 100; // Количество звезд
-
-            for (let i = 0; i < starCount; i++) {
-                const star = document.createElement('div');
-                star.classList.add('star');
-                star.style.top = `${Math.random() * 100}%`;
-                star.style.left = `${Math.random() * 100}%`;
-                star.style.animationDelay = `${Math.random() * 2}s`;
-                starsContainer.appendChild(star);
-            }
-        }
-
-        createStars();
-    </script>
 </body>
 </html>
