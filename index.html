@@ -102,6 +102,7 @@
             background: rgba(31, 31, 31, 0.9);
             cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative; /* Для позиционирования текста "В разработке" */
         }
 
         .game:hover {
@@ -434,6 +435,29 @@
         .language-switcher.active .dropdown {
             display: block;
         }
+
+        /* Стили для неактивной игры */
+        .game.disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .game.disabled img {
+            filter: blur(2px);
+        }
+
+        .game.disabled::after {
+            content: attr(data-in-development); /* Используем атрибут для текста */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+        }
     </style>
 </head>
 <body>
@@ -476,40 +500,41 @@
         <!-- Ячейки с играми -->
         <div class="game-grid">
             <!-- Lucky Jet -->
-<div class="game" onclick="window.location.href='https://maxim378gaps.github.io/zet/'">
-    <img src="./static/images/lucky_jet.png" alt="Lucky Jet">
-    <h3 data-key="lucky_jet">Lucky Jet</h3>
-</div>
+            <div class="game" onclick="window.location.href='https://maxim378gaps.github.io/zet/?lang=' + currentLang">
+                <img src="./static/images/lucky_jet.png" alt="Lucky Jet">
+                <h3 data-key="lucky_jet">Lucky Jet</h3>
+            </div>
 
-<!-- Mines -->
-<div class="game" onclick="window.location.href='https://ссылка_на_mines'">
-    <img src="./static/images/mines.png" alt="Mines">
-    <h3 data-key="mines">Mines</h3>
-</div>
+            <!-- Mines -->
+            <div class="game" onclick="window.location.href='https://ссылка_на_mines'">
+                <img src="./static/images/mines.png" alt="Mines">
+                <h3 data-key="mines">Mines</h3>
+            </div>
 
-<!-- New Mines -->
-<div class="game" onclick="window.location.href='https://ссылка_на_new_mines'">
-    <img src="./static/images/new_mines.png" alt="New Mines">
-    <h3 data-key="new_mines">New Mines</h3>
-</div>
+            <!-- New Mines -->
+            <div class="game" onclick="window.location.href='https://ссылка_на_new_mines'">
+                <img src="./static/images/new_mines.png" alt="New Mines">
+                <h3 data-key="new_mines">New Mines</h3>
+            </div>
 
-<!-- Bombucks -->
-<div class="game" onclick="window.location.href='https://ссылка_на_bombucks'">
-    <img src="./static/images/bombucks.png" alt="Bombucks">
-    <h3 data-key="bombucks">Bombucks</h3>
-</div>
+            <!-- CoinFlip -->
+            <div class="game" onclick="window.location.href='https://ссылка_на_coinflip'">
+                <img src="./static/images/coinflip.png" alt="CoinFlip">
+                <h3 data-key="coinflip">CoinFlip</h3>
+            </div>
 
-<!-- Royal Mines -->
-<div class="game" onclick="window.location.href='https://ссылка_на_royal_mines'">
-    <img src="./static/images/royal_mines.png" alt="Royal Mines">
-    <h3 data-key="royal_mines">Royal Mines</h3>
-</div>
+            <!-- Royal Mines -->
+            <div class="game disabled" data-in-development="В разработке">
+                <img src="./static/images/royal_mines.png" alt="Royal Mines">
+                <h3 data-key="royal_mines">Royal Mines</h3>
+            </div>
 
-<!-- Aviator -->
-<div class="game" onclick="window.location.href='https://ссылка_на_aviator'">
-    <img src="./static/images/aviator.png" alt="Aviator">
-    <h3 data-key="aviator">Aviator</h3>
-</div>
+            <!-- Aviator -->
+            <div class="game" onclick="window.location.href='https://ссылка_на_aviator'">
+                <img src="./static/images/aviator.png" alt="Aviator">
+                <h3 data-key="aviator">Aviator</h3>
+            </div>
+        </div>
 
         <!-- Кнопки под рамкой -->
         <div class="bottom-buttons">
@@ -540,7 +565,7 @@
                 lucky_jet: "Lucky Jet",
                 mines: "Mines",
                 new_mines: "New Mines",
-                bombucks: "Bombucks",
+                coinflip: "CoinFlip",
                 royal_mines: "Royal Mines",
                 aviator: "Aviator",
                 instruction_button: "ИНСТРУКЦИЯ",
@@ -549,7 +574,8 @@
                 instruction_text: `Для того, чтобы получить сигнал, выбери режим в главном меню. Если ты сделал все правильно и зарегистрировался через кнопку в боте, то твой аккаунт привязан к приложению с сигналами и будет работать в штатном режиме. Указывая промокод <span class="promo">«MINWIN25»</span> при регистрации, шансы на точность сигналов возрастают до 98%. Удачных сигналов!`,
                 close_button: "Закрыть",
                 device_scanning: "Определяем ваше устройство...",
-                device_result: "Ваше устройство: {device}. Рекомендуемые режимы: Lucky Jet, Mines."
+                device_result: "Ваше устройство: {device}. Рекомендуемые режимы: Lucky Jet, Mines.",
+                in_development: "В разработке" // Добавлен перевод для "В разработке"
             },
             en: {
                 main_menu: "Main Menu",
@@ -558,7 +584,7 @@
                 lucky_jet: "Lucky Jet",
                 mines: "Mines",
                 new_mines: "New Mines",
-                bombucks: "Bombucks",
+                coinflip: "CoinFlip",
                 royal_mines: "Royal Mines",
                 aviator: "Aviator",
                 instruction_button: "INSTRUCTION",
@@ -567,7 +593,8 @@
                 instruction_text: `To receive a signal, select a mode in the main menu. If you have done everything correctly and registered through the button in the bot, your account is linked to the signal application and will work in normal mode. By specifying the promo code <span class="promo">«MINWIN25»</span> during registration, the chances of signal accuracy increase to 98%. Good luck with your signals!`,
                 close_button: "Close",
                 device_scanning: "Detecting your device...",
-                device_result: "Your device: {device}. Recommended modes: Lucky Jet, Mines."
+                device_result: "Your device: {device}. Recommended modes: Lucky Jet, Mines.",
+                in_development: "In Development" // Добавлен перевод для "В разработке"
             },
             in: {
                 main_menu: "मुख्य मेनू",
@@ -576,7 +603,7 @@
                 lucky_jet: "लकी जेट",
                 mines: "माइन्स",
                 new_mines: "न्यू माइन्स",
-                bombucks: "बॉम्बक्स",
+                coinflip: "कॉइनफ्लिप",
                 royal_mines: "रॉयल माइन्स",
                 aviator: "एविएटर",
                 instruction_button: "निर्देश",
@@ -585,15 +612,19 @@
                 instruction_text: `सिग्नल प्राप्त करने के लिए, मुख्य मेनू में एक मोड चुनें। यदि आपने सब कुछ सही ढंग से किया है और बॉट में बटन के माध्यम से पंजीकरण किया है, तो आपका खाता सिग्नल एप्लिकेशन से जुड़ा होगा और सामान्य रूप से काम करेगा। पंजीकरण के दौरान प्रोमो कोड <span class="promo">«MINWIN25»</span> निर्दिष्ट करने से, सिग्नल सटीकता की संभावना 98% तक बढ़ जाती है। शुभकामनाएँ!`,
                 close_button: "बंद करें",
                 device_scanning: "आपका डिवाइस पहचाना जा रहा है...",
-                device_result: "आपका डिवाइस: {device}. अनुशंसित मोड: Lucky Jet, Mines."
+                device_result: "आपका डिवाइस: {device}. अनुशंसित मोड: Lucky Jet, Mines.",
+                in_development: "विकास में" // Добавлен перевод для "В разработке"
             }
         };
 
         // Установка языка
-        let currentLang = 'ru'; // Текущий язык по умолчанию
+        let currentLang = localStorage.getItem('selectedLanguage') || 'ru'; // Текущий язык по умолчанию
 
         function setLanguage(lang) {
             currentLang = lang; // Обновляем текущий язык
+
+            // Сохраняем язык в localStorage
+            localStorage.setItem('selectedLanguage', lang);
 
             // Обновляем текст на кнопке переключения языка
             const languageButton = document.getElementById('language-button');
@@ -612,6 +643,12 @@
                     element.innerHTML = translations[lang][key]; // Используем innerHTML для поддержки HTML-тегов
                 }
             });
+
+            // Обновляем текст "В разработке"
+            const royalMines = document.querySelector('.game.disabled');
+            if (royalMines) {
+                royalMines.setAttribute('data-in-development', translations[lang].in_development);
+            }
 
             // Закрываем выпадающий список
             document.querySelector('.language-switcher').classList.remove('active');
