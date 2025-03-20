@@ -35,12 +35,8 @@ body {
 }
 
 @keyframes twinkle {
-    0%, 100% {
-        opacity: 0;
-    }
-    50% {
-        opacity: 1;
-    }
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
 }
 
 /* Основной контейнер */
@@ -95,7 +91,7 @@ body {
     background: rgba(31, 31, 31, 0.9);
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    position: relative; /* Для позиционирования текста "В разработке" */
+    position: relative;
 }
 
 .game:hover {
@@ -237,12 +233,8 @@ body {
 }
 
 @keyframes rotate {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 /* Адаптация для мобильных устройств */
@@ -295,13 +287,13 @@ body {
 
     /* Упрощение анимаций для мобильных устройств */
     .close:hover {
-        transform: none; /* Убираем увеличение при наведении */
-        color: #fff; /* Возвращаем стандартный цвет */
+        transform: none;
+        color: #fff;
     }
 
     .close:active {
-        animation: none; /* Убираем вращение при нажатии */
-        transform: scale(1.1); /* Увеличиваем кнопку при нажатии */
+        animation: none;
+        transform: scale(1.1);
     }
 }
 
@@ -410,6 +402,15 @@ body {
     border-radius: 10px;
     padding: 10px;
     z-index: 1000;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.language-switcher.active .dropdown {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .language-switcher .dropdown button {
@@ -425,10 +426,6 @@ body {
     background: rgba(0, 191, 255, 0.2);
 }
 
-.language-switcher.active .dropdown {
-    display: block;
-}
-
 /* Стили для неактивной игры */
 .game.disabled {
     cursor: not-allowed;
@@ -441,7 +438,7 @@ body {
 }
 
 .game.disabled::after {
-    content: attr(data-in-development); /* Используем атрибут для текста */
+    content: attr(data-in-development);
     position: absolute;
     top: 50%;
     left: 50%;

@@ -17,7 +17,7 @@ const translations = {
         close_button: "Закрыть",
         device_scanning: "Определяем ваше устройство...",
         device_result: "Ваше устройство: {device}. Рекомендуемые режимы: Lucky Jet, Mines.",
-        in_development: "В разработке" // Добавлен перевод для "В разработке"
+        in_development: "В разработке"
     },
     en: {
         main_menu: "Main Menu",
@@ -36,7 +36,7 @@ const translations = {
         close_button: "Close",
         device_scanning: "Detecting your device...",
         device_result: "Your device: {device}. Recommended modes: Lucky Jet, Mines.",
-        in_development: "In Development" // Добавлен перевод для "В разработке"
+        in_development: "In Development"
     },
     in: {
         main_menu: "मुख्य मेनू",
@@ -55,44 +55,32 @@ const translations = {
         close_button: "बंद करें",
         device_scanning: "आपका डिवाइस पहचाना जा रहा है...",
         device_result: "आपका डिवाइस: {device}. अनुशंसित मोड: Lucky Jet, Mines.",
-        in_development: "विकास में" // Добавлен перевод для "В разработке"
+        in_development: "विकास में"
     }
 };
 
 // Установка языка
-let currentLang = localStorage.getItem('selectedLanguage') || 'ru'; // Текущий язык по умолчанию
+let currentLang = localStorage.getItem('selectedLanguage') || 'ru';
 
 function setLanguage(lang) {
-    currentLang = lang; // Обновляем текущий язык
-
-    // Сохраняем язык в localStorage
+    currentLang = lang;
     localStorage.setItem('selectedLanguage', lang);
-
-    // Обновляем текст на кнопке переключения языка
     const languageButton = document.getElementById('language-button');
     languageButton.textContent = lang.toUpperCase() + ' ▼';
-
-    // Обновляем флаг
     const flagIcon = document.getElementById('flag-icon');
     flagIcon.src = `flags/${lang === 'ru' ? 'ru' : lang === 'en' ? 'us' : 'in'}.svg`;
-
-    // Обновляем остальные тексты
     document.querySelectorAll('[data-key]').forEach(element => {
         const key = element.getAttribute('data-key');
         if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
             element.placeholder = translations[lang][key];
         } else {
-            element.innerHTML = translations[lang][key]; // Используем innerHTML для поддержки HTML-тегов
+            element.innerHTML = translations[lang][key];
         }
     });
-
-    // Обновляем текст "В разработке"
     const royalMines = document.querySelector('.game.disabled');
     if (royalMines) {
         royalMines.setAttribute('data-in-development', translations[lang].in_development);
     }
-
-    // Закрываем выпадающий список
     document.querySelector('.language-switcher').classList.remove('active');
 }
 
@@ -118,8 +106,7 @@ setLanguage(currentLang);
 // Создание звезд
 function createStars() {
     const starsContainer = document.getElementById('stars-container');
-    const starCount = 100; // Количество звезд
-
+    const starCount = 100;
     for (let i = 0; i < starCount; i++) {
         const star = document.createElement('div');
         star.classList.add('star');
@@ -131,3 +118,10 @@ function createStars() {
 }
 
 createStars();
+
+// Регистрация Service Worker
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+        .then(() => console.log('Service Worker registered'))
+        .catch((err) => console.error('Service Worker registration failed:', err));
+}
